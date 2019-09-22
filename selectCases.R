@@ -26,10 +26,13 @@ selectCases <- function(DxDataFile, idColName, icdColName, dateColName, icd10usi
     ## 當*groupDataType*不是ICD, 取標準化分組的長表"groupedDT"
     groupedData <- groupedData$groupedDT[,-"ICD"]
   }else{
-    ## 當*groupDataType*是ICD, 取統一轉換的欄位名稱(short或decimal)改成ICD
+    ## 當*groupDataType*是ICD
     groupedData <- groupedData[,-"ICD"]
-    names(groupedData) <- gsub("Short|Decimal", "ICD", names(groupedData))
   }
+
+  ## 將統一轉換的欄位名稱(short或decimal)改成ICD
+  names(groupedData) <- gsub("Short|Decimal", "ICD", names(groupedData))
+
   ## 將 *groupDataType* 改為"groupedData"的標準分組的欄位(如CCS: CCS_CATEGORY or CCS_DESCRIPTION)
   groupDataType <- names(groupedData)[ncol(groupedData)]
   groupByCol <- c("ID",groupDataType)
@@ -76,3 +79,4 @@ selectCases <- function(DxDataFile, idColName, icdColName, dateColName, icd10usi
   allData <- allData[,c("ID","selectedCase","count","firstCaseDate","endCaseDate","period","MostCommonICD","MostCommonICDCount")]
   allData
 }
+
